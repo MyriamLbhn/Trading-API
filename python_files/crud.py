@@ -1,4 +1,3 @@
-import datetime
 import sqlite3
 
 def new_user(name : str, email : str, password : str):
@@ -26,21 +25,33 @@ def new_action(entreprise : str, prix : int):
     connexion.close()
 
 def new_transaction(user_id: int, action_id: int,
-                    prix_achat: float,
-                    date_heure_achat: int,
-                    prix_vente = None,
-                    date_heure_vente = None):
+                    prix_achat: float):
     
-    timenow = datetime.datetime.now()
     connexion = sqlite3.connect("bdd_trading.db")
     cursor = connexion.cursor()
 
     cursor.execute('''
                     INSERT INTO "transaction"
-                        VALUES (?, ?, ?, CURRENT_TIMESTANP, ?, ?)
-                ''', (user_id, action_id, prix_achat, date_heure_achat, prix_vente, date_heure_vente))
+                        VALUES (?, ?, ?, CURRENT_TIMESTAMP, NULL, NULL)
+                ''', (user_id, action_id, prix_achat))
 
     connexion.commit()
     connexion.close()
 
-new_transaction(1,1,51000,1000000)
+
+# Modifier éléments
+
+def update_transaction(prix_vente:float, action_id:int):
+    connexion = sqlite3.connect("bdd_trading.db")
+    curseur = connexion.cursor()
+    
+    curseur.execute("""
+                    UPDATE "transaction"
+                        SET prix_vente = ?, date_heure_vente = CURRENT_TIMESTAMP
+                        WHERE action_id = ?
+                    """, (prix_vente, action_id))
+    
+    connexion.commit()
+    connexion.close()
+    
+update_transaction(54000, 1)
