@@ -63,8 +63,6 @@ def new_transaction(user_id: int, action_id: int,
     connexion.close()
 
 
-# Modifier éléments
-
 def update_transaction(prix_vente:float, action_id:int):
     connexion = sqlite3.connect("bdd_trading.db")
     curseur = connexion.cursor()
@@ -77,5 +75,3 @@ def update_transaction(prix_vente:float, action_id:int):
     
     connexion.commit()
     connexion.close()
-
-new_transaction(1,1,51000,1000000)
