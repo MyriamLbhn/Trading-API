@@ -12,6 +12,30 @@ def new_user(name : str, email : str, password : str):
     connexion.commit()
     connexion.close()
 
+def user_follows(following_user_id : int, followed_user_id : int):
+    connexion = sqlite3.connect("bdd_trading.db")
+    cursor = connexion.cursor()
+
+    cursor.execute('''
+                    INSERT INTO user_follows_user
+                        VALUES (?, ?)
+                ''', (following_user_id, followed_user_id))
+    
+    connexion.commit()
+    connexion.close()
+
+def user_unfollows(unfollowing_user_id : int, unfollowed_user_id : int):
+    connexion = sqlite3.connect("bdd_trading.db")
+    cursor = connexion.cursor()
+
+    cursor.execute("""
+                    DELETE FROM user_follows_user
+                        WHERE following_user_id = ? AND followed_user_id = ?
+                    """, (unfollowing_user_id, unfollowed_user_id))
+    
+    connexion.commit()
+    connexion.close()
+
 def new_action(entreprise : str, prix : int):
     connexion = sqlite3.connect("bdd_trading.db")
     cursor = connexion.cursor()
@@ -53,5 +77,5 @@ def update_transaction(prix_vente:float, action_id:int):
     
     connexion.commit()
     connexion.close()
-    
-update_transaction(54000, 1)
+
+new_transaction(1,1,51000,1000000)
