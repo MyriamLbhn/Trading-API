@@ -20,7 +20,6 @@ def new_user(nom:str, est_entreprise:bool, email:str, mdp:str, jwt:str) -> int:
     return id_user
 
 
-
 def user_follows(following_user_id : int, followed_user_id : int):
     connexion = sqlite3.connect("../bdd_trading.db")
     cursor = connexion.cursor()
@@ -34,18 +33,19 @@ def user_follows(following_user_id : int, followed_user_id : int):
     connexion.close()
 
 
-
-def new_action(entreprise : str, prix : int):
+def new_action(entreprise : str, prix : int,proprietaire_id: int):
     connexion = sqlite3.connect("../bdd_trading.db")
     cursor = connexion.cursor()
 
     cursor.execute('''
                     INSERT INTO action
-                        VALUES (NULL, ?, ?)
-                ''', (entreprise, prix))
+                        VALUES (NULL, ?, ?, ?, ?)
+                ''', (entreprise, prix, True, proprietaire_id))
     
     connexion.commit()
     connexion.close()
+
+# new_action("AIRBUS", 52000, 2)
 
 def new_transaction(user_id: int,
                     action_id: int,
@@ -120,7 +120,7 @@ def get_available_actions() -> list:
     curseur = connexion.cursor()
 
     curseur.execute("""
-                    SELECT * FROM actions WHERE available = 1
+                    SELECT * FROM actions WHERE available = ?
                     """)
     resultat = curseur.fetchall()
 

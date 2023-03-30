@@ -51,12 +51,12 @@ async def inscription(user:UserRegister):
         crud.update_token(id_user, token)
         return {"token" : token}
 
-# @app.get("/api/articles")
-# async def mes_articles(req: Request):
-#     try:
-#         decode = decoder_token(req.headers["Authorization"])
-#         id_user = crud.get_id_user_by_email(decode["email"])[0]
-#         articles = crud.obtenir_article_user(id_user)
-#         return {"id_user": id_user, "articles": articles}
-#     except:
-#         raise HTTPException(status_code=401, detail="Vous devez être identifiés pour accéder à cet endpoint")
+@app.get("/api/actions")
+async def mes_actions(req: Request):
+    try:
+        decode = decoder_token(req.headers["Authorization"])
+        id_user = crud.get_id_user_by_email(decode["email"])[0]
+        actions = crud.get_users_actions(id_user)
+        return {"id_user": id_user, "article": actions}
+    except:
+        raise HTTPException(status_code=401, detail="Vous devez être identifiés pour accéder à cet endpoint")
