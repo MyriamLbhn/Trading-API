@@ -7,8 +7,9 @@ curseur.execute("""
                 CREATE TABLE IF NOT EXISTS user (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     name TEXT NOT NULL,
-                    email TEXT NOT NULL,
-                    mdp TEXT NOT NULL
+                    email TEXT NOT NULL UNIQUE,
+                    mdp TEXT NOT NULL,
+                    jwt TEXT
                 )
                 """)
 connexion.commit()
