@@ -10,15 +10,15 @@ def new_user(nom:str, est_entreprise:bool, email:str, mdp:str, jwt:str) -> int:
     curseur = connexion.cursor()
 
     curseur.execute("""
-                    INSERT INTO user 
-                        VALUES (NULL, ?, ?, ?, ?, ?)
-                    """, (nom, est_entreprise, email, mdp, jwt))
+                INSERT INTO user (nom, est_entreprise, email, mdp, jwt)
+                    VALUES (?, ?, ?, ?, ?)
+                """, (nom, est_entreprise, email, mdp, jwt))
     
     id_user = curseur.lastrowid
     connexion.commit()
     connexion.close()
     return id_user
-
+# new_user("Myriam", False, "myriam@gmail.com", "azert", "eifonhzejofndjfvn")
 
 def user_follows(following_user_id : int, followed_user_id : int):
     connexion = sqlite3.connect("../bdd_trading.db")
@@ -45,7 +45,12 @@ def new_action(entreprise : str, prix : int,proprietaire_id: int):
     connexion.commit()
     connexion.close()
 
-# new_action("AIRBUS", 52000, 2)
+# new_action("BOURSORAMA", 51000, 4)
+# new_action("AIRBUS", 52000, 3)
+# new_action("LVMH", 54000, 2)
+
+
+
 
 def new_transaction(user_id: int,
                     action_id: int,
@@ -108,7 +113,7 @@ def get_users_actions(id_user:int) -> list:
     curseur = connexion.cursor()
 
     curseur.execute("""
-                    SELECT * FROM transaction WHERE user_id = ?
+                    SELECT * FROM actions WHERE user_id = ?
                     """, (id_user,))
     
     resultat = curseur.fetchall()
@@ -120,7 +125,7 @@ def get_available_actions() -> list:
     curseur = connexion.cursor()
 
     curseur.execute("""
-                    SELECT * FROM actions WHERE available = ?
+                    SELECT * FROM actions WHERE available = 1
                     """)
     resultat = curseur.fetchall()
 

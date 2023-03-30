@@ -41,22 +41,23 @@ async def inscription(user:UserRegister):
     if crud.get_id_user_by_email(user.email) != None:
         raise HTTPException(status_code=403, detail="L'email fourni possède déjà un compte")
     else:
-        id_user = crud.new_user(user.nom, user.email, user.est_entreprise, hasher_mdp(user.mdp), None)
+        id_user = crud.new_user(user.nom, user.est_entreprise, user.email,  hasher_mdp(user.mdp), None)
         token = jwt.encode({
+            "est_entreprise" : user.est_entreprise,
             "email" : user.email,
             "mdp" : user.mdp,
             "id" : id_user,
-            "est_entreprise" : user.est_entreprise,
         }, SECRET_KEY, algorithm=ALGORITHM)
         crud.update_token(id_user, token)
         return {"token" : token}
 
-@app.get("/api/actions")
-async def mes_actions(req: Request):
-    try:
-        decode = decoder_token(req.headers["Authorization"])
-        id_user = crud.get_id_user_by_email(decode["email"])[0]
-        actions = crud.get_users_actions(id_user)
-        return {"id_user": id_user, "article": actions}
-    except:
-        raise HTTPException(status_code=401, detail="Vous devez être identifiés pour accéder à cet endpoint")
+# @app.get("/api/actions")
+# async def mes_actions(req: Request):
+#     try:
+#         decode = decoder_token(req.headers["Authorization"])
+#         id_user = crud.get_id_user_by_email(decode["email"])[0]
+#         actions = crud.get_users_actions(id_user)
+#         return {"id_user": id_user, "action": actions}
+#     except:
+#         raise HTTPException(status_code=401, detail="Vous devez être identifiés pour accéder à cet endpoint")
+    
