@@ -6,7 +6,7 @@ import datetime
 #######################################################################################################
 
 def new_user(nom:str, est_entreprise:bool, email:str, mdp:str, jwt:str) -> int:
-    connexion = sqlite3.connect("bdd.db")
+    connexion = sqlite3.connect("../bdd_trading.db")
     curseur = connexion.cursor()
 
     curseur.execute("""
@@ -19,8 +19,10 @@ def new_user(nom:str, est_entreprise:bool, email:str, mdp:str, jwt:str) -> int:
     connexion.close()
     return id_user
 
+
+
 def user_follows(following_user_id : int, followed_user_id : int):
-    connexion = sqlite3.connect("bdd_trading.db")
+    connexion = sqlite3.connect("../bdd_trading.db")
     cursor = connexion.cursor()
 
     cursor.execute('''
@@ -34,7 +36,7 @@ def user_follows(following_user_id : int, followed_user_id : int):
 
 
 def new_action(entreprise : str, prix : int):
-    connexion = sqlite3.connect("bdd_trading.db")
+    connexion = sqlite3.connect("../bdd_trading.db")
     cursor = connexion.cursor()
 
     cursor.execute('''
@@ -49,7 +51,7 @@ def new_transaction(user_id: int,
                     action_id: int,
                     prix_achat: float):
     
-    connexion = sqlite3.connect("bdd_trading.db")
+    connexion = sqlite3.connect("../bdd_trading.db")
     cursor = connexion.cursor()
 
     cursor.execute('''
@@ -67,7 +69,7 @@ def new_transaction(user_id: int,
 #######################################################################################################
 
 def get_jwt_by_email_mdp(email:str, mdp:str):
-    connexion = sqlite3.connect("bdd.db")
+    connexion = sqlite3.connect("../bdd_trading.db")
     curseur = connexion.cursor()
 
     curseur.execute("""
@@ -89,7 +91,7 @@ def get_jwt_by_email_mdp(email:str, mdp:str):
 #     return resultat
 
 def get_id_user_by_email(email:str):
-    connexion = sqlite3.connect("bdd.db")
+    connexion = sqlite3.connect("../bdd_trading.db")
     curseur = connexion.cursor()
 
     curseur.execute("""
@@ -102,7 +104,7 @@ def get_id_user_by_email(email:str):
 
     
 def get_users_actions(id_user:int) -> list:
-    connexion = sqlite3.connect("bdd.db")
+    connexion = sqlite3.connect("../bdd_trading.db")
     curseur = connexion.cursor()
 
     curseur.execute("""
@@ -114,7 +116,7 @@ def get_users_actions(id_user:int) -> list:
     return resultat
 
 def get_available_actions() -> list:
-    connexion = sqlite3.connect("bdd.db")
+    connexion = sqlite3.connect("../bdd_trading.db")
     curseur = connexion.cursor()
 
     curseur.execute("""
@@ -131,7 +133,7 @@ def get_available_actions() -> list:
 #######################################################################################################
 
 def update_token(id, token:str)->None:
-    connexion = sqlite3.connect("bdd.db")
+    connexion = sqlite3.connect("../bdd_trading.db")
     curseur = connexion.cursor()
 
     curseur.execute("""
@@ -144,7 +146,7 @@ def update_token(id, token:str)->None:
     connexion.close()
 
 # def update_transaction(prix_vente:float, action_id:int):
-#     connexion = sqlite3.connect("bdd_trading.db")
+#     connexion = sqlite3.connect("../bdd_trading.db")
 #     curseur = connexion.cursor()
     
 #     curseur.execute("""
@@ -161,7 +163,7 @@ def update_token(id, token:str)->None:
 #######################################################################################################
 
 def user_unfollows(unfollowing_user_id : int, unfollowed_user_id : int):
-    connexion = sqlite3.connect("bdd_trading.db")
+    connexion = sqlite3.connect("../bdd_trading.db")
     cursor = connexion.cursor()
 
     cursor.execute("""
@@ -173,7 +175,7 @@ def user_unfollows(unfollowing_user_id : int, unfollowed_user_id : int):
     connexion.close()
 
 def delete_user(user_id):
-    connexion = sqlite3.connect("bdd_trading.db")
+    connexion = sqlite3.connect("../bdd_trading.db")
     cursor = connexion.cursor()
 
     cursor.execute("""
@@ -185,7 +187,7 @@ def delete_user(user_id):
     connexion.close()
 
 def delete_action(action_id):
-    connexion = sqlite3.connect("bdd_trading.db")
+    connexion = sqlite3.connect("../bdd_trading.db")
     cursor = connexion.cursor()
 
     cursor.execute("""

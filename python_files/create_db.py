@@ -1,6 +1,6 @@
 import sqlite3
 
-connexion = sqlite3.connect("bdd_trading.db")
+connexion = sqlite3.connect("../bdd_trading.db")
 curseur = connexion.cursor()
 
 curseur.execute("""
