@@ -6,7 +6,8 @@ curseur = connexion.cursor()
 curseur.execute("""
                 CREATE TABLE IF NOT EXISTS user (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    name TEXT NOT NULL,
+                    nom TEXT NOT NULL,
+                    est_entreprise BOOL NOT NULL,
                     email TEXT NOT NULL UNIQUE,
                     mdp TEXT NOT NULL,
                     jwt TEXT
@@ -14,15 +15,21 @@ curseur.execute("""
                 """)
 connexion.commit()
 
+#######################################################################################
+##################################  AVEC FOREIGN KEY   ################################
+########################################   \/    ######################################
+
 curseur.execute("""
                 CREATE TABLE IF NOT EXISTS action (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     entreprise TEXT NOT NULL,
-                    prix FLOAT NOT NULL
+                    prix FLOAT NOT NULL,
+                    disponible BOOL NOT NULL,
+                    proprietaire_id INT NOT NULL,
+                    FOREIGN KEY(proprietaire_id) REFERENCES user(id)
                 )
                 """)
 connexion.commit()
-
 
 curseur.execute("""
                 CREATE TABLE IF NOT EXISTS "transaction" (
