@@ -99,3 +99,28 @@ async def sell_transaction(transaction: TransactionSell, req: Request):
     except:
         raise HTTPException(status_code=401, detail="Vous devez être identifiés pour accéder à cet endpoint")
     return {"message": "La vente a été effectuée avec succès"}
+
+@app.post("/api/follow")
+async def follow_user(email: str, req: Request):
+    try:
+        decode = decoder_token(req.headers["Authorization"])
+        following_user_id = crud.get_id_user_by_email(decode["email"])[0]
+    except:
+        raise HTTPException(status_code=401, detail="Vous devez être identifié pour accéder à cet endpoint")
+
+    followed_users = crud.get_users_by_mail(email)
+    if not followed_users:
+        raise HTTPException(status_code=404, detail="L'utilisateur à suivre n'existe pas")
+
+    followed_user_id = followed_users[0][0]
+    if following_user_id == followed_user_id:
+        raise HTTPException(status_code=400, detail="Vous ne pouvez pas vous suivre vous-même")
+
+    if crud.is_following(following_user_id, followed_user_id):
+        raise HTTPException(status_code=400, detail="Vous suivez déjà cet utilisateur")
+
+    crud.user_follows(following_user_id, followed_user_id)
+
+    return {"message": "Vous suivez maintenant l'utilisateur avec l'adresse e-mail {}".format(email)}
+
+

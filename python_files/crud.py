@@ -77,15 +77,15 @@ def get_jwt_by_email_mdp(email:str, mdp:str):
     connexion.close()
     return resultat
     
-# def get_users_by_mail(mail:str):
-#     connexion = sqlite3.connect("bdd.db")
-#     curseur = connexion.cursor()
-#     curseur.execute("""
-#                     SELECT * FROM user WHERE email=?
-#                     """, (mail,))
-#     resultat = curseur.fetchall()
-#     connexion.close()
-#     return resultat
+def get_users_by_mail(mail:str):
+    connexion = sqlite3.connect("../bdd_trading.db")
+    curseur = connexion.cursor()
+    curseur.execute("""
+                    SELECT * FROM user WHERE email=?
+                    """, (mail,))
+    resultat = curseur.fetchall()
+    connexion.close()
+    return resultat
 
 def get_id_user_by_email(email:str):
     connexion = sqlite3.connect("../bdd_trading.db")
@@ -140,6 +140,18 @@ def is_action_available(action_id: int) -> bool:
     connexion.close()
     return disponible
 
+def is_following(following_user_id: int, followed_user_id: int) -> bool:
+    connexion = sqlite3.connect("../bdd_trading.db")
+    curseur = connexion.cursor()
+    curseur.execute("""
+                    SELECT * FROM user_follows_user
+                    WHERE following_user_id=? AND followed_user_id=?
+                    """, (following_user_id, followed_user_id))
+    resultat = curseur.fetchone() is not None
+    connexion.close()
+    return resultat
+
+
 #######################################################################################################
 #############################################   UPDATE   ##############################################
 #######################################################################################################
@@ -157,18 +169,6 @@ def update_token(id, token:str)->None:
     connexion.commit()
     connexion.close()
 
-# def update_transaction(prix_vente:float, action_id:int):
-#     connexion = sqlite3.connect("../bdd_trading.db")
-#     curseur = connexion.cursor()
-    
-#     curseur.execute("""
-#                     UPDATE "transaction"
-#                         SET prix_vente = ?, date_heure_vente = CURRENT_TIMESTAMP
-#                         WHERE action_id = ?
-#                     """, (prix_vente, action_id))
-    
-#     connexion.commit()
-#     connexion.close()
     
 def update_action_buying(user_id: int, action_id: int) -> None:
     connexion = sqlite3.connect("../bdd_trading.db")
