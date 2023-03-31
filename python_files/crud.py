@@ -49,12 +49,18 @@ def new_action(entreprise : str, prix : int,proprietaire_id: int):
 # new_action("THALES", 54000, 1)
 
 
-def new_transaction_buying(user_id: int,
-                            action_id: int,
-                            prix_achat: float):
+def new_transaction_buying(user_id: int, action_id: int):
     
     connexion = sqlite3.connect("../bdd_trading.db")
     cursor = connexion.cursor()
+
+    # Obtenir le prix de l'action correspondante
+    cursor.execute('''
+                    SELECT prix
+                    FROM action
+                    WHERE id = ?
+                ''', (action_id,))
+    prix_achat = cursor.fetchone()[0]
 
     # Mettre à jour la ligne correspondante de la table action
     cursor.execute('''
@@ -155,18 +161,18 @@ def update_token(id, token:str)->None:
     connexion.commit()
     connexion.close()
 
-def update_transaction(prix_vente:float, action_id:int):
-    connexion = sqlite3.connect("../bdd_trading.db")
-    curseur = connexion.cursor()
+# def update_transaction(prix_vente:float, action_id:int):
+#     connexion = sqlite3.connect("../bdd_trading.db")
+#     curseur = connexion.cursor()
     
-    curseur.execute("""
-                    UPDATE "transaction"
-                        SET prix_vente = ?, date_heure_vente = CURRENT_TIMESTAMP
-                        WHERE action_id = ?
-                    """, (prix_vente, action_id))
+#     curseur.execute("""
+#                     UPDATE "transaction"
+#                         SET prix_vente = ?, date_heure_vente = CURRENT_TIMESTAMP
+#                         WHERE action_id = ?
+#                     """, (prix_vente, action_id))
     
-    connexion.commit()
-    connexion.close()
+#     connexion.commit()
+#     connexion.close()
     
 def update_action(action_id:int):
     connexion = sqlite3.connect("../bdd_trading.db")

@@ -33,7 +33,6 @@ class UserLogin(BaseModel):
 class Transaction(BaseModel):
     user_id: int
     action_id: int
-    prix_achat: float
 
 app = FastAPI()
 
@@ -69,6 +68,6 @@ async def mes_actions(req: Request):
 
 @app.post("/api/transaction")
 async def add_transaction(transaction: Transaction):
-    crud.new_transaction_buying(transaction.user_id, transaction.action_id, transaction.prix_achat)
+    crud.new_transaction_buying(transaction.user_id, transaction.action_id)
     return {"message": "Transaction added successfully."}
     
