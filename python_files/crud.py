@@ -117,7 +117,7 @@ def get_available_actions() -> list:
     curseur = connexion.cursor()
 
     curseur.execute("""
-                    SELECT * FROM actions WHERE available = 1
+                    SELECT * FROM action WHERE disponible = 1
                     """)
     resultat = curseur.fetchall()
 
@@ -151,6 +151,20 @@ def is_following(following_user_id: int, followed_user_id: int) -> bool:
     connexion.close()
     return resultat
 
+def get_hashed_password(id_user: int) -> str:
+    connexion = sqlite3.connect("../bdd_trading.db")
+    curseur = connexion.cursor()
+
+    curseur.execute("""
+                    SELECT mdp FROM user
+                    WHERE id=?
+                    """, (id_user,))
+    resultat = curseur.fetchone()
+    connexion.close()
+    
+    return resultat
+
+
 
 #######################################################################################################
 #############################################   UPDATE   ##############################################
@@ -168,7 +182,6 @@ def update_token(id, token:str)->None:
     
     connexion.commit()
     connexion.close()
-
     
 def update_action_buying(user_id: int, action_id: int) -> None:
     connexion = sqlite3.connect("../bdd_trading.db")
@@ -187,7 +200,6 @@ def update_transaction_selling(user_id: int, action_id: int, prix_vente: float):
                 ''', (prix_vente, user_id, action_id))
     connexion.commit()
     connexion.close()
-
     
 def update_action_selling(action_id: int) -> None:
     connexion = sqlite3.connect("../bdd_trading.db")
@@ -196,7 +208,25 @@ def update_action_selling(action_id: int) -> None:
     connexion.commit()
     connexion.close()
     
-# def update_mail(mail:str, mdp:str)
+def update_mail(id:int, new_mail:str)->None:
+    connexion = sqlite3.connect("../bdd_trading.db")
+    curseur = connexion.cursor()
+
+    curseur.execute("""
+                   UPDATE user 
+                   SET email = ?
+                   WHERE id = ?
+                   """, (new_mail, id))
+    
+    connexion.commit()
+    connexion.close()
+    
+def update_price_action(id:int,new_price:float):
+    connexion = sqlite3.connect('../bdd_trading.db')
+    curseur = connexion.cursor()
+    curseur.execute("""UPDATE action SET prix = ? WHERE id = ? """, (new_price, id))
+    connexion.commit()
+    
 
 #######################################################################################################
 #############################################   DELETE   ##############################################

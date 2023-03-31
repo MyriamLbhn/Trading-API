@@ -144,5 +144,39 @@ async def unfollow_user(email: str, req: Request):
 
     return {"message": "Vous ne suivez plus l'utilisateur avec l'adresse e-mail {}".format(email)}
 
+@app.post("/api/auth/login")
+async def login(user: UserLogin):
+    token = crud.get_jwt_by_email_mdp(user.email, hasher_mdp(user.mdp))
+    if token is None:
+        raise HTTPException(status_code=401, detail="Une erreur s'est produite lors de la génération du token, vérifiez que vous ayez saisi le bon mot de passe et le bon email")
+    return {"token": token[0]}
 
+@app.get("/api/actions")
+async def available_actions(req: Request):
+    action = crud.get_available_actions()
+    return {"action": action}
+
+# A corriger
+# pwd_context = CryptContext(schemes=["sha256_crypt"])
+
+# @app.put("/api/update_mail")
+# async def update_mail(new_mail: str, mdp: str, req: Request):
+#     try:
+#         decode = decoder_token(req.headers["Authorization"])
+#         id_user = crud.get_id_user_by_email(decode["email"])[0]
+#     except:
+#         raise HTTPException(status_code=401, detail="Vous devez être identifié pour accéder à cet endpoint")
+
+#     # Récupérer le mot de passe hashé dans la base de données
+#     hashed_password = crud.get_hashed_password(id_user)
+
+#     # Vérifier si le mot de passe entré correspond au mot de passe hashé
+#     is_valid = pwd_context.verify(mdp, hashed_password)
+#     if not is_valid:
+#         raise HTTPException(status_code=401, detail="Mot de passe incorrect")
+
+#     # Mettre à jour l'adresse email dans la base de données
+#     crud.update_mail(id_user, new_mail)
+
+#     return {"message": "Adresse e-mail mise à jour avec succès"}
 
