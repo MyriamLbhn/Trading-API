@@ -29,6 +29,11 @@ class UserRegister(BaseModel):
 class UserLogin(BaseModel):
     email:str
     mdp:str
+    
+class Transaction(BaseModel):
+    user_id: int
+    action_id: int
+    prix_achat: float
 
 app = FastAPI()
 
@@ -55,9 +60,15 @@ async def inscription(user:UserRegister):
 async def mes_actions(req: Request):
     try:
         decode = decoder_token(req.headers["Authorization"])
+        id_user = crud.get_id_user_by_email(decode["email"])[0]
+        action = crud.get_users_actions(id_user)
     except:
         raise HTTPException(status_code=401, detail="Vous devez être identifiés pour accéder à cet endpoint")
-    id_user = crud.get_id_user_by_email(decode["email"])[0]
-    action = crud.get_users_actions(id_user)
     return {"id_user": id_user, "action": action}
+
+
+@app.post("/api/transaction")
+async def add_transaction(transaction: Transaction):
+    crud.new_transaction_buying(transaction.user_id, transaction.action_id, transaction.prix_achat)
+    return {"message": "Transaction added successfully."}
     

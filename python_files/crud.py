@@ -45,20 +45,25 @@ def new_action(entreprise : str, prix : int,proprietaire_id: int):
     connexion.commit()
     connexion.close()
 
-# new_action("SAFRAN", 51000, 1)
-# new_action("AIRBUS", 52000, 2)
-# new_action("THALES", 54000, 3)
+# new_action("SAFRAN", 51000, 2)
+# new_action("THALES", 54000, 1)
 
 
-
-
-def new_transaction(user_id: int,
-                    action_id: int,
-                    prix_achat: float):
+def new_transaction_buying(user_id: int,
+                            action_id: int,
+                            prix_achat: float):
     
     connexion = sqlite3.connect("../bdd_trading.db")
     cursor = connexion.cursor()
 
+    # Mettre à jour la ligne correspondante de la table action
+    cursor.execute('''
+                    UPDATE action
+                    SET proprietaire_id = ?, disponible = 0
+                    WHERE id = ?
+                ''', (user_id, action_id))
+
+    # Insérer une nouvelle ligne dans la table "transaction"
     cursor.execute('''
                     INSERT INTO "transaction"
                         VALUES (?, ?, ?, CURRENT_TIMESTAMP, NULL, NULL)
@@ -162,6 +167,20 @@ def update_transaction(prix_vente:float, action_id:int):
     
     connexion.commit()
     connexion.close()
+    
+def update_action(action_id:int):
+    connexion = sqlite3.connect("../bdd_trading.db")
+    curseur = connexion.cursor()
+    
+    curseur.execute("""
+                    UPDATE "action"
+                        SET propriaitaire_id = user_id
+                        WHERE action_id = ?
+                    """, (action_id))
+    
+    connexion.commit()
+    connexion.close()
+    
     
 # def update_mail(mail:str, mdp:str)
 
