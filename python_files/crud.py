@@ -45,9 +45,9 @@ def new_action(entreprise : str, prix : int,proprietaire_id: int):
     connexion.commit()
     connexion.close()
 
-# new_action("BOURSORAMA", 51000, 4)
-# new_action("AIRBUS", 52000, 3)
-# new_action("LVMH", 54000, 2)
+# new_action("SAFRAN", 51000, 1)
+# new_action("AIRBUS", 52000, 2)
+# new_action("THALES", 54000, 3)
 
 
 
@@ -113,7 +113,7 @@ def get_users_actions(id_user:int) -> list:
     curseur = connexion.cursor()
 
     curseur.execute("""
-                    SELECT * FROM actions WHERE user_id = ?
+                    SELECT * FROM action WHERE proprietaire_id = ?
                     """, (id_user,))
     
     resultat = curseur.fetchall()
@@ -150,18 +150,20 @@ def update_token(id, token:str)->None:
     connexion.commit()
     connexion.close()
 
-# def update_transaction(prix_vente:float, action_id:int):
-#     connexion = sqlite3.connect("../bdd_trading.db")
-#     curseur = connexion.cursor()
+def update_transaction(prix_vente:float, action_id:int):
+    connexion = sqlite3.connect("../bdd_trading.db")
+    curseur = connexion.cursor()
     
-#     curseur.execute("""
-#                     UPDATE "transaction"
-#                         SET prix_vente = ?, date_heure_vente = CURRENT_TIMESTAMP
-#                         WHERE action_id = ?
-#                     """, (prix_vente, action_id))
+    curseur.execute("""
+                    UPDATE "transaction"
+                        SET prix_vente = ?, date_heure_vente = CURRENT_TIMESTAMP
+                        WHERE action_id = ?
+                    """, (prix_vente, action_id))
     
-#     connexion.commit()
-#     connexion.close()
+    connexion.commit()
+    connexion.close()
+    
+# def update_mail(mail:str, mdp:str)
 
 #######################################################################################################
 #############################################   DELETE   ##############################################
