@@ -123,4 +123,26 @@ async def follow_user(email: str, req: Request):
 
     return {"message": "Vous suivez maintenant l'utilisateur avec l'adresse e-mail {}".format(email)}
 
+@app.delete("/api/unfollow")
+async def unfollow_user(email: str, req: Request):
+    try:
+        decode = decoder_token(req.headers["Authorization"])
+        unfollowing_user_id = crud.get_id_user_by_email(decode["email"])[0]
+    except:
+        raise HTTPException(status_code=401, detail="Vous devez être identifié pour accéder à cet endpoint")
+
+    unfollowed_users = crud.get_users_by_mail(email)
+    if not unfollowed_users:
+        raise HTTPException(status_code=404, detail="L'utilisateur à unfollow n'existe pas")
+
+    unfollowed_user_id = unfollowed_users[0][0]
+    
+    if not crud.is_following(unfollowing_user_id, unfollowed_user_id):
+        raise HTTPException(status_code=400, detail="Vous ne suivez pas cet utilisateur")
+
+    crud.user_unfollows(unfollowing_user_id, unfollowed_user_id)
+
+    return {"message": "Vous ne suivez plus l'utilisateur avec l'adresse e-mail {}".format(email)}
+
+
 
