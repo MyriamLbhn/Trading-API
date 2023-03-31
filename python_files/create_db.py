@@ -7,7 +7,6 @@ curseur.execute("""
                 CREATE TABLE IF NOT EXISTS user (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     nom TEXT NOT NULL,
-                    est_entreprise BOOL NOT NULL,
                     email TEXT NOT NULL UNIQUE,
                     mdp TEXT NOT NULL,
                     jwt TEXT
@@ -25,8 +24,8 @@ curseur.execute("""
                     entreprise TEXT NOT NULL,
                     prix FLOAT NOT NULL,
                     disponible BOOL NOT NULL,
-                    proprietaire_id INT NOT NULL,
-                    FOREIGN KEY(proprietaire_id) REFERENCES user(id)
+                    user_id INT ,
+                    FOREIGN KEY(user_id) REFERENCES user(id)
                 )
                 """)
 connexion.commit()

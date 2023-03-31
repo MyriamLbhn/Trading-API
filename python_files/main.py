@@ -5,6 +5,8 @@ from pydantic import BaseModel
 import crud
 from jose import jwt
 import hashlib
+import sqlite3
+
 
 SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
 ALGORITHM = "HS256"
@@ -24,16 +26,20 @@ class UserRegister(BaseModel):
     nom:str
     email:str
     mdp:str
-    est_entreprise:bool
 
 class UserLogin(BaseModel):
     email:str
     mdp:str
     
-class Transaction(BaseModel):
+class TransactionBuy(BaseModel):
     user_id: int
     action_id: int
 
+class TransactionSell(BaseModel):
+    user_id: int
+    action_id: int
+    prix_vente: float
+    
 app = FastAPI()
 
 @app.get("/")
@@ -45,9 +51,8 @@ async def inscription(user:UserRegister):
     if crud.get_id_user_by_email(user.email) != None:
         raise HTTPException(status_code=403, detail="L'email fourni possède déjà un compte")
     else:
-        id_user = crud.new_user(user.nom, user.est_entreprise, user.email,  hasher_mdp(user.mdp), None)
+        id_user = crud.new_user(user.nom, user.email,  hasher_mdp(user.mdp), None)
         token = jwt.encode({
-            "est_entreprise" : user.est_entreprise,
             "email" : user.email,
             "mdp" : user.mdp,
             "id" : id_user,
@@ -66,8 +71,28 @@ async def mes_actions(req: Request):
     return {"id_user": id_user, "action": action}
 
 
-@app.post("/api/transaction")
-async def add_transaction(transaction: Transaction):
+# @app.post("/api/transaction")
+# async def add_transaction(transaction: Transaction):
+#     crud.new_transaction_buying(transaction.user_id, transaction.action_id)
+#     return {"message": "Transaction added successfully."}
+   
+@app.post("/api/transaction/buy")
+async def buy_transaction(transaction: TransactionBuy):
+    # Vérifier si l'action est disponible
+    if not crud.is_action_available(transaction.action_id):
+        return {"message": "Action not available."}
+
+    # Acheter l'action
     crud.new_transaction_buying(transaction.user_id, transaction.action_id)
+
     return {"message": "Transaction added successfully."}
-    
+
+@app.post("/api/transaction/sell")
+async def sell_transaction(transaction: TransactionSell):
+    action_available = crud.is_action_available(transaction.action_id)
+    if  action_available:
+        return {"message": "L'action n'est pas disponible à la vente"}
+    else:
+        crud.update_transaction_selling(transaction.user_id, transaction.action_id, transaction.prix_vente)
+        crud.update_action_selling(transaction.action_id)
+        return {"message": "La vente a été effectuée avec succès"}
