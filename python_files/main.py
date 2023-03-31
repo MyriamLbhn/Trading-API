@@ -32,11 +32,9 @@ class UserLogin(BaseModel):
     mdp:str
     
 class TransactionBuy(BaseModel):
-    user_id: int
     action_id: int
 
 class TransactionSell(BaseModel):
-    user_id: int
     action_id: int
     prix_vente: float
     
@@ -70,29 +68,34 @@ async def mes_actions(req: Request):
         raise HTTPException(status_code=401, detail="Vous devez être identifiés pour accéder à cet endpoint")
     return {"id_user": id_user, "action": action}
 
-
-# @app.post("/api/transaction")
-# async def add_transaction(transaction: Transaction):
-#     crud.new_transaction_buying(transaction.user_id, transaction.action_id)
-#     return {"message": "Transaction added successfully."}
-   
+  
 @app.post("/api/transaction/buy")
-async def buy_transaction(transaction: TransactionBuy):
-    # Vérifier si l'action est disponible
-    if not crud.is_action_available(transaction.action_id):
-        return {"message": "Action not available."}
+async def buy_transaction(transaction: TransactionBuy, req: Request):
+    try:
+        decode = decoder_token(req.headers["Authorization"])
+        user_id = decode["id"]
+        # Vérifier si l'action est disponible
+        if not crud.is_action_available(transaction.action_id):
+            return {"message": "Action not available."}
 
-    # Acheter l'action
-    crud.new_transaction_buying(transaction.user_id, transaction.action_id)
-
+        # Acheter l'action
+        crud.new_transaction_buying(user_id, transaction.action_id)
+    except:
+        raise HTTPException(status_code=401, detail="Vous devez être identifiés pour accéder à cet endpoint")
     return {"message": "Transaction added successfully."}
 
+
 @app.post("/api/transaction/sell")
-async def sell_transaction(transaction: TransactionSell):
-    action_available = crud.is_action_available(transaction.action_id)
-    if  action_available:
-        return {"message": "L'action n'est pas disponible à la vente"}
-    else:
-        crud.update_transaction_selling(transaction.user_id, transaction.action_id, transaction.prix_vente)
-        crud.update_action_selling(transaction.action_id)
-        return {"message": "La vente a été effectuée avec succès"}
+async def sell_transaction(transaction: TransactionSell, req: Request):
+    try:
+        decode = decoder_token(req.headers["Authorization"])
+        user_id = decode["id"]
+        action_available = crud.is_action_available(transaction.action_id)
+        if  action_available:
+            return {"message": "L'action n'est pas disponible à la vente"}
+        else:
+            crud.update_transaction_selling(user_id, transaction.action_id, transaction.prix_vente)
+            crud.update_action_selling(transaction.action_id)
+    except:
+        raise HTTPException(status_code=401, detail="Vous devez être identifiés pour accéder à cet endpoint")
+    return {"message": "La vente a été effectuée avec succès"}

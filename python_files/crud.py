@@ -49,36 +49,6 @@ def new_action(entreprise : str, prix : int):
 # new_action("THALES", 54000)
 
 
-# def new_transaction_buying(user_id: int, action_id: int):
-    
-#     connexion = sqlite3.connect("../bdd_trading.db")
-#     cursor = connexion.cursor()
-
-#     # Obtenir le prix de l'action correspondante
-#     cursor.execute('''
-#                     SELECT prix
-#                     FROM action
-#                     WHERE id = ?
-#                 ''', (action_id,))
-#     prix_achat = cursor.fetchone()[0]
-
-#     # Mettre à jour la ligne correspondante de la table action
-#     cursor.execute('''
-#                     UPDATE action
-#                     SET proprietaire_id = ?, disponible = 0
-#                     WHERE id = ?
-#                 ''', (user_id, action_id))
-
-#     # Insérer une nouvelle ligne dans la table "transaction"
-#     cursor.execute('''
-#                     INSERT INTO "transaction"
-#                         VALUES (?, ?, ?, CURRENT_TIMESTAMP, NULL, NULL)
-#                 ''', (user_id, action_id, prix_achat))
-
-#     connexion.commit()
-#     connexion.close()
-
-
 def new_transaction_buying(user_id: int, action_id: int) -> None:
     prix_achat = get_price_by_action_id(action_id)
     update_action_buying(user_id, action_id)
