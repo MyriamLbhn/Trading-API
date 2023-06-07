@@ -25,14 +25,14 @@ Développer une API de trading social à l'aide de FastAPI.
         - is_action_available : vérifier si l'action est disponible
         - is_following : vérifier si l'user suit un autre user
         - get_hashed_password : hasher le mdp
-        - *🚨 Fonction qu'il reste à implémenter*: vérifier la validité du JWT
+        - *🚨 Fonction qu'il reste à implémenter 🚨 *: vérifier la validité du JWT
 
     - UPDATE : 
-        - update_token : 🚨 changer de JWT
+        - update_token : changer de JWT
         - update_action_buying, update_action_selling, update_transaction_selling : mettre à jour le status de l'action en cas de vente/achat et les transactions
         - update_price_action : changer la valeur d’une action
-        - update_mail : changer de mail ✅ 🚨 
-        -  *🚨 Fonction qu'il reste à implémenter*: changer de mot de passe
+        - update_mail : changer de mail 
+        -  *🚨 Fonction qu'il reste à implémenter 🚨 *: changer de mot de passe
         
     - DELETE :
         - delete_action : supprimer une action
@@ -40,7 +40,7 @@ Développer une API de trading social à l'aide de FastAPI.
         - user_unfollows : arrêter de suivre 
 
 - main.py : Contient les endpoints pour acceder aux fonctions CRUD
-    *🚨 Endpoint qu'il reste à implémenter* : 
+    *🚨 Endpoint qu'il reste à implémenter 🚨 * : 
         - voir les actions des personnes que l'on suit
         - changer de mail
         - changer de JWT
