@@ -39,7 +39,7 @@ Développer une API de trading social à l'aide de FastAPI.
         - delete_user : supprimer un utilisateur 
         - user_unfollows : arrêter de suivre 
 
-- **main.py** : Contient les endpoints pour acceder aux fonctions CRUD
+- **main.py** : Contient les endpoints pour acceder aux fonctions CRUD  
      🚨 *Endpoint qu'il reste à implémenter* 🚨 : 
         - voir les actions des personnes que l'on suit
         - changer de mail
@@ -56,14 +56,16 @@ On ouvre son navigateur à http://127.0.0.1:8000/nom_du_endpoint (les adresses d
 
 
 On peut utiliser POSTMAN pour envoyer des reqêtes à l'API :  
+
+
 Pour utiliser votre API avec Postman, vous pouvez suivre les étapes suivantes :
-    - Assurez-vous d'avoir votre API en cours d'exécution, prête à recevoir des requêtes.
-    - Ouvrez Postman sur votre ordinateur.
-    - Créez une nouvelle requête en cliquant sur le bouton "New" dans l'interface de Postman.
-    - Dans le champ de sélection de la méthode de requête (à gauche de l'URL), choisissez la méthode appropriée (GET, POST, PUT, DELETE)
-    - Dans le champ de l'URL, saisissez l'URL de l'API, http://127.0.0.1:8000/nom_du_endpoint 
-    - Si votre API nécessite des paramètres, vous pouvez les ajouter en cliquant sur l'onglet "Params" situé juste en dessous de l'URL et en spécifiant les clés et les valeurs.
-    - Si votre API nécessite un corps de requête (par exemple, pour les requêtes POST ou PUT), vous pouvez spécifier le contenu dans l'onglet "Body".
-    - Cliquez sur le bouton "Send" pour envoyer la requête à votre API.
-    - Vous verrez la réponse JSON de votre API s'afficher dans la section de réponse de Postman, avec le code de statut, le corps de la réponse et d'autres détails pertinents.
+- Assurez-vous d'avoir votre API en cours d'exécution, prête à recevoir des requêtes.
+- Ouvrez Postman sur votre ordinateur.
+- Créez une nouvelle requête en cliquant sur le bouton "New" dans l'interface de Postman.
+- Dans le champ de sélection de la méthode de requête (à gauche de l'URL), choisissez la méthode appropriée (GET, POST, PUT, DELETE)
+- Dans le champ de l'URL, saisissez l'URL de l'API, http://127.0.0.1:8000/nom_du_endpoint 
+- Si votre API nécessite des paramètres, vous pouvez les ajouter en cliquant sur l'onglet "Params" situé juste en dessous de l'URL et en spécifiant les clés et les valeurs.
+- Si votre API nécessite un corps de requête (par exemple, pour les requêtes POST ou PUT), vous pouvez spécifier le contenu dans l'onglet "Body".
+- Cliquez sur le bouton "Send" pour envoyer la requête à votre API.
+- Vous verrez la réponse JSON de votre API s'afficher dans la section de réponse de Postman, avec le code de statut, le corps de la réponse et d'autres détails pertinents.
 
