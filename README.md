@@ -40,11 +40,11 @@ Développer une API de trading social à l'aide de FastAPI.
         - user_unfollows : arrêter de suivre 
 
 - **main.py** : Contient les endpoints pour acceder aux fonctions CRUD  
-     🚨 *Endpoint qu'il reste à implémenter* 🚨 : 
-        - voir les actions des personnes que l'on suit
-        - changer de mail
-        - changer de JWT
-        - changer de mot de passe
+     🚨 *Endpoint qu'il reste à implémenter* 🚨 :   
+        - voir les actions des personnes que l'on suit  
+        - changer de mail  
+        - changer de JWT  
+        - changer de mot de passe  
 
 ## Requirements :
 Les packages requis pour exécuter ce projet sont répertoriés dans le fichier requirements.txt. Pour installer ces packages, exécutez la commande suivante dans un terminal : pip install -r requirements.txt.
