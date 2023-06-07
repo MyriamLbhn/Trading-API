@@ -53,6 +53,7 @@ Les packages requis pour exécuter ce projet sont répertoriés dans le fichier 
 
 Pour utiliser l'API, il vous suffit de vous rendre dans le répertoire où se trouve le fichier **main.py* et d'exécuter la commande suivante dans un terminal : `uvicorn main:app --reload`.  
 On ouvre son navigateur à http://127.0.0.1:8000/nom_du_endpoint (les adresses des endpoints sont définies dans main.py). On obtient un réponse JSON.  
+Vous pouvez acceder à une documentation automatique intéreactive à l'adresse : http://127.0.0.1:8000/docs#/
 
 
 On peut utiliser POSTMAN pour envoyer des reqêtes à l'API :  
